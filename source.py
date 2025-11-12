@@ -38,6 +38,14 @@ def cargar_imagen(ruta):
             raise ValueError(f"No se pudo cargar la imagen: {ruta}")
         return imagen
 
+def histograma_color(imagen):
+    colores = ('b', 'g', 'r')
+    hist_data = {}
+    for i, color in enumerate(colores):
+        hist = cv2.calcHist([imagen], [i], None, [256], [0, 256])
+        hist_data[color] = hist
+    return hist_data
+
 # ---------------- Interfaz ---------------- #
 def seleccionar_imagen():
     ruta = filedialog.askopenfilename(
@@ -49,6 +57,7 @@ def seleccionar_imagen():
 
     # Cargar imagen
     imagen = cargar_imagen(ruta)
+    color = histograma_color(imagen)
     alto, ancho = imagen.shape[:2]
     imagen_resized = cv2.resize(imagen, (ancho//2, alto//2))
 
